@@ -1,5 +1,5 @@
 pipenv>=20.10.2
 ml-buildkit>=0.6.18
-urllib3>=1.26.13
+urllib3>=2.6.3
 twine>=5.1.1
 docker>=7.2.0
