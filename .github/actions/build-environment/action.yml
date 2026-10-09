@@ -21,4 +21,4 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'ghcr.io/khulnasoft/ml-buildkit:latest'
+  image: 'khulnasoft/ml-buildkit-image:latest'
