@@ -15,9 +15,9 @@ on:
     branches:
       - main
 
-env:
-  ARGS: ${{ github.event.inputs.args || secrets.BUILD_ARGS }}
-  WORKING_DIR: ${{ github.event.inputs.working_directory || secrets.WORKING_DIRECTORY }}
+permissions:
+  contents: read
+  packages: read
 
 jobs:
   build:
@@ -26,11 +26,14 @@ jobs:
       - name: Get host IP
         run: echo "_HOST_IP=$(hostname -I | cut -d ' ' -f 1)" >> $GITHUB_ENV
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Run build scripts
         uses: ./.github/actions/build-environment
         with:
-          build_args: ${{ env.ARGS }}
-          working_directory: ${{ env.WORKING_DIR }}
+          build_args: ${{ github.event.inputs.args }}
+          working_directory: ${{ github.event.inputs.working_directory }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
